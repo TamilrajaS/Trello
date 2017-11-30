@@ -1,0 +1,16 @@
+//Mixins
+@mixin font-family($font) {
+    font-family: $font, Helvetica, Arial, Geneva, sans-serif;
+}
+@mixin custom-btn($color, $border) {
+    background: #fff !important;
+    border-radius: 6px !important;
+    border: 1px solid $border !important;
+    color: $color !important;
+}
+
+@mixin header-text($font-size, $font-weight, $letter-spacing) {
+    font-size: $font-size;
+    font-weight: $font-weight;
+    letter-spacing:$letter-spacing;
+}
