@@ -1,0 +1,26 @@
+.card {
+  background-color: $card-background-color;
+  border: 1px solid $card-background-color;
+  border-radius: 4px;
+
+  .card-title {
+    color: $black-color;
+    padding: 10px 20px;
+	}
+
+  .card-content {
+    text-align: left;
+	}
+
+  .card-footer {
+    color: $green-color;
+    font-size: 20px;
+    padding: 10px 20px;
+    text-align: right;
+    width: 100%;
+
+    &::before {
+      cursor: pointer;
+		}
+	}
+}

@@ -1,13 +1,13 @@
-@charset 'UTF-8';
+@charset 'utf-8';
 $f-avenir: 'Avenir';
 @mixin font-family($font) {
-    font-family: $font;
+  font-family: $font;
 }
 $f-avenir-url-1: url('../fonts/AvenirLTStd-Roman.otf');
 @mixin font-face($font, $url1) {
-    font-family: $font;
-    src: $url1 format('woff');
+  font-family: $font;
+  src: $url1 format('woff');
 }
 @font-face {
-     @include font-face($f-avenir, $f-avenir-url-1);
+  @include font-face($f-avenir, $f-avenir-url-1);
 }

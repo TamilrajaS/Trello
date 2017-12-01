@@ -1,339 +1,179 @@
-function header_build() {
-  var element = document.createElement('header');
-
-  var headerLeftDiv = document.createElement('div');
-  headerLeftDiv.classList.add('col-6');
-  var imageTag = document.createElement('img');
-  imageTag.src = "./assets/img/logo.png";
-  imageTag.alt = "Logo";
-  imageTag.title = "Trello";
-  headerLeftDiv.appendChild(imageTag);
-  element.appendChild(headerLeftDiv);
-
-  var headerRightDiv = document.createElement('div');
-  headerRightDiv.classList.add('col-6');
-  headerRightDiv.classList.add('text-right');
-  headerRightDiv.textContent = 'Welcome Admin';
-  element.appendChild(headerRightDiv);
-  return element;
+function headerBuild () {
+  var element = createHtml('header')
+  var leftDiv = createHtml('div', {'class': 'col-6'}, element)
+  createHtml('img', {'src': './assets/img/logo.png', 'alt': 'Logo', 'title': 'Trello'}, leftDiv)
+  var headRightDiv = createHtml('div', {'class': ['col-6', 'text-right', 'user-txt']}, element)
+  headRightDiv.textContent = 'Welcome Admin'
+  return element
 }
-document.body.appendChild(header_build());
+document.body.appendChild(headerBuild())
 
-
-function section_build() {
-  var element = document.createElement('section');
-
-  var topDiv = document.createElement('div');
-  topDiv.classList.add('grid-container');
-
-  var innerDiv = document.createElement('div');
-  innerDiv.classList.add('row');
-  topDiv.appendChild(innerDiv);
-
-  element.appendChild(topDiv);
-  return element;
+function sectionBuild () {
+  var element = createHtml('section')
+  var innerElement = createHtml('div', {'class': 'grid-container'}, element)
+  createHtml('div', {'class': 'row'}, innerElement)
+  return element
 }
-document.body.appendChild(section_build());
+document.body.appendChild(sectionBuild())
 
-function card_build(id, add_id) {
-  try{
-    var element = document.createElement('div');
-    element.classList.add('col-3');
-
-    var topDiv = document.createElement('div');
-    topDiv.classList.add('card');
-    element.appendChild(topDiv);
-
-    var titleDiv = document.createElement('div');
-    titleDiv.classList.add('card-title');
-    var textHeader = document.createElement('h3');
-    var footer_flag = 0;
-    switch(id){
-      case 'task_div':
-        textHeader.textContent = 'Task List';
-        footer_flag = 1;
-        break;
-      case 'dev_div':
-        textHeader.textContent = 'In Development';
-        break;
-      case 'qa_div':
-        textHeader.textContent = 'Q & A';
-        break;
-      case 'completed_div':
-        textHeader.textContent = 'Completed';
-        break;
+function cardBuild (id, addId) {
+  try {
+    var element = createHtml('div', { 'class': 'col-3' })
+    var cardElement = createHtml('div', { 'class': 'card' }, element)
+    var cardHeaderElement = createHtml('div', { 'class': 'card-title' }, cardElement)
+    var footerFlag
+    var headerContent
+    switch (id) {
+      case 'taskDiv':
+        headerContent = 'Task List'
+        footerFlag = 1
+        break
+      case 'devDiv':
+        headerContent = 'In Development'
+        break
+      case 'qaDiv':
+        headerContent = 'Q & A'
+        break
+      case 'completedDiv':
+        headerContent = 'Completed'
+        break
+      default:
+        break
     }
-    titleDiv.appendChild(textHeader);
-    topDiv.appendChild(titleDiv);
-
-    var contentDiv = document.createElement('div');
-    contentDiv.classList.add('card-content');
-    contentDiv.id  = id;
-    topDiv.appendChild(contentDiv);
-
-    if(footer_flag == 1){
-      var footerDiv = document.createElement('div');
-      footerDiv.classList.add('card-footer');
-      footerDiv.classList.add('fa');
-      footerDiv.classList.add('fa-plus-circle');
-      footerDiv.id  = add_id;
-      topDiv.appendChild(footerDiv);
+    var headerTitleDiv = createHtml('h3', '', cardHeaderElement)
+    headerTitleDiv.textContent = headerContent
+    createHtml('div', { 'class': 'card-content', 'id': id }, cardElement)
+    if (footerFlag) {
+      createHtml('div', { 'class': ['card-footer', 'fa', 'fa-plus-circle'], 'id': addId }, cardElement)
     }
-    return element;
-  }catch(e){
-    console.log(e);
+    return element
+  } catch (e) {
+    console.log(e)
   }
 }
 // Task Card Creation
-document.getElementsByClassName('row')[0].appendChild(card_build('task_div', 'add_task'));
-// Development Card Creation
-document.getElementsByClassName('row')[0].appendChild(card_build('dev_div', 'add_dev'));
-// Q&A Card Creation
-document.getElementsByClassName('row')[0].appendChild(card_build('qa_div', 'add_qa'));
-// Completed Card Creation
-document.getElementsByClassName('row')[0].appendChild(card_build('completed_div', 'add_completed'));
+var findRowElement = document.getElementsByClassName('row')[0]
+var cardArr = { 'addTask': 'taskDiv', 'addDev': 'devDiv', 'addQa': 'qaDiv', 'addCompleted': 'completedDiv' }
+for (var key in cardArr) {
+  findRowElement.appendChild(cardBuild(cardArr[key], key))
+}
 
-function move_model_build() {
-  try{
-    var element = model_build('moveModal', "Move", 0);
-    var cardContentDiv = element.getElementsByClassName("card-content dialog-cont")[0];
+function moveModelBuild () {
+  try {
+    var element = modelBuild('moveModal', 'Move', 0)
+    var cardContentDiv = element.getElementsByClassName('card-content dialog-cont')[0]
+    var formElement = createHtml('form', { 'id': 'moveForm', 'name': 'moveForm', 'onsubmit': 'return false;' }, cardContentDiv)
+    var rowDiv
+    var rowLabelDiv
+    var rowInputDiv
+    rowDiv = createHtml('div', { 'class': 'dailog-row' }, formElement)
+    rowLabelDiv = createHtml('div', { 'class': 'inp-label' }, rowDiv)
+    rowLabelDiv.textContent = 'Developer Name'
+    rowInputDiv = createHtml('div', '', rowDiv)
+    var selectElement = createHtml('select', { 'id': 'devDeveloperId' }, rowInputDiv)
+    var option = document.createElement('option')
+    option.value = ''
+    option.text = 'Please select the developer'
+    option.selected = true
+    selectElement.add(option)
+    createHtml('span', { 'id': 'errDevDeveloperId', 'class': 'error-msg' }, rowInputDiv)
 
-    var formElement = create_form_build('move_form', 'return false;');
-    cardContentDiv.appendChild(formElement);
-
-    var rowDiv = document.createElement('div');
-    rowDiv.classList.add('dailog-row');
-    formElement.appendChild(rowDiv);
-
-    var rowLabelDiv = document.createElement('div');
-    rowLabelDiv.classList.add('inp-label');
-    rowLabelDiv.appendChild(document.createTextNode('Developer Name'));
-    rowDiv.appendChild(rowLabelDiv);
-
-    var rowInputDiv = document.createElement('div');
-    rowDiv.appendChild(rowInputDiv);
-
-    var selectElement = create_combo_build('dev_developer_id', 'Please select the developer');
-    rowInputDiv.appendChild(selectElement);
-
-    var rowDiv = document.createElement('div');
-    rowDiv.classList.add('dailog-row');
-    formElement.appendChild(rowDiv);
-
-    var rowFormDiv = document.createElement('div');
-    rowDiv.appendChild(rowFormDiv);
-
-    var rowInputDiv = create_input_build('dev_task_id', 'hidden', 0, '');
-    rowFormDiv.appendChild(rowInputDiv);
-
-    var rowInputDiv = create_button_build('btn_task_move', 'Save', '');
-    rowFormDiv.appendChild(rowInputDiv);
-
-    return element;
-  }catch(e){
-    console.log(e);
+    rowDiv = createHtml('div', { 'class': 'dailog-row' }, formElement)
+    rowInputDiv = createHtml('div', '', rowDiv)
+    createHtml('input', { 'type': 'hidden', 'id': 'devTaskId', 'value': 0 }, rowInputDiv)
+    var buttonDiv = createHtml('button', { 'id': 'btnTaskMove' }, rowInputDiv)
+    buttonDiv.textContent = 'Save'
+    return element
+  } catch (e) {
+    console.log(e)
   }
 }
-document.body.appendChild(move_model_build());
+document.body.appendChild(moveModelBuild())
 
-function task_model_build() {
-  try{
-    var element = model_build('taskModal', "Task", 1);
-    var cardContentDiv = element.getElementsByClassName("card-content dialog-cont")[0];
+function taskModelBuild () {
+  try {
+    var element = modelBuild('taskModal', 'Task', 1)
+    var cardContentDiv = element.getElementsByClassName('card-content dialog-cont')[0]
+    var formElement = createHtml('form', { 'id': 'taskForm', 'name': 'taskForm', 'onsubmit': 'return false;' }, cardContentDiv)
+    var rowDiv
+    var rowLabelDiv
+    var rowInputDiv
 
-    var formElement = create_form_build('task_form', 'return false;');
-    cardContentDiv.appendChild(formElement);
+    rowDiv = createHtml('div', { 'class': 'dailog-row' }, formElement)
+    rowLabelDiv = createHtml('div', { 'class': 'inp-label' }, rowDiv)
+    rowLabelDiv.textContent = 'Task Name'
+    rowInputDiv = createHtml('div', '', rowDiv)
+    createHtml('input', { 'id': 'taskName', 'value': '', 'placeholder': 'Please enter the task name' }, rowInputDiv)
+    createHtml('span', { 'id': 'errTaskName', 'class': 'error-msg' }, rowInputDiv)
 
-    var rowDiv = document.createElement('div');
-    rowDiv.classList.add('dailog-row');
-    formElement.appendChild(rowDiv);
+    rowDiv = createHtml('div', { 'class': 'dailog-row' }, formElement)
+    rowLabelDiv = createHtml('div', { 'class': 'inp-label' }, rowDiv)
+    rowLabelDiv.textContent = 'Task Desc'
+    rowInputDiv = createHtml('div', '', rowDiv)
+    createHtml('input', { 'id': 'taskDesc', 'value': '', 'placeholder': 'Please enter the task description' }, rowInputDiv)
 
-    var rowLabelDiv = document.createElement('div');
-    rowLabelDiv.classList.add('inp-label');
-    rowLabelDiv.appendChild(document.createTextNode('Task Name'));
-    rowDiv.appendChild(rowLabelDiv);
+    rowDiv = createHtml('div', { 'class': 'dailog-row' }, formElement)
+    rowLabelDiv = createHtml('div', { 'class': 'inp-label' }, rowDiv)
+    rowLabelDiv.textContent = 'Developer Name'
+    rowInputDiv = createHtml('div', '', rowDiv)
+    var selectElement = createHtml('select', { 'id': 'taskDeveloperId' }, rowInputDiv)
+    var option = document.createElement('option')
+    option.value = ''
+    option.text = 'Please select the developer'
+    option.setAttribute('selected', true)
+    selectElement.add(option)
 
-    var rowInputDiv = document.createElement('div');
-    rowDiv.appendChild(rowInputDiv);
+    rowDiv = createHtml('div', { 'class': 'dailog-row' }, formElement)
+    rowLabelDiv = createHtml('div', { 'class': 'inp-label' }, rowDiv)
+    rowLabelDiv.textContent = 'Comments'
+    rowInputDiv = createHtml('div', '', rowDiv)
+    createHtml('textarea', { 'id': 'taskDeveloperComments', 'rows': 4, 'placeholder': 'Please enter the Comments' }, rowInputDiv)
 
-    var inputElement = create_input_build('task_name', 'text', '', 'Please enter the task name');
-    rowInputDiv.appendChild(inputElement);
+    rowDiv = createHtml('div', { 'class': 'dailog-row' }, formElement)
+    createHtml('input', { 'type': 'hidden', 'id': 'taskId', 'value': 0 }, rowDiv)
+    createHtml('input', { 'type': 'hidden', 'id': 'taskAction', 'value': 'create' }, rowDiv)
+    var buttonDiv = createHtml('button', { 'id': 'btnTaskAdd' }, rowDiv)
+    buttonDiv.textContent = 'Save'
 
-    var rowDiv = document.createElement('div');
-    rowDiv.classList.add('dailog-row');
-    formElement.appendChild(rowDiv);
-
-    var rowLabelDiv = document.createElement('div');
-    rowLabelDiv.classList.add('inp-label');
-    rowLabelDiv.appendChild(document.createTextNode('Task Desc'));
-    rowDiv.appendChild(rowLabelDiv);
-
-    var rowInputDiv = document.createElement('div');
-    rowDiv.appendChild(rowInputDiv);
-
-    var inputElement = create_input_build('task_desc', 'text', '', 'Please enter the task description');
-    rowInputDiv.appendChild(inputElement);
-
-    var rowDiv = document.createElement('div');
-    rowDiv.classList.add('dailog-row');
-    formElement.appendChild(rowDiv);
-
-    var rowLabelDiv = document.createElement('div');
-    rowLabelDiv.classList.add('inp-label');
-    rowLabelDiv.appendChild(document.createTextNode('Developer Name'));
-    rowDiv.appendChild(rowLabelDiv);
-
-    var rowInputDiv = document.createElement('div');
-    rowDiv.appendChild(rowInputDiv);
-
-    var selectElement = create_combo_build('task_developer_id', 'Please select the developer');
-    rowInputDiv.appendChild(selectElement);
-
-    var rowDiv = document.createElement('div');
-    rowDiv.classList.add('dailog-row');
-    formElement.appendChild(rowDiv);
-
-    var rowLabelDiv = document.createElement('div');
-    rowLabelDiv.classList.add('inp-label');
-    rowLabelDiv.appendChild(document.createTextNode('Comments'));
-    rowDiv.appendChild(rowLabelDiv);
-
-    var rowInputDiv = document.createElement('div');
-    rowDiv.appendChild(rowInputDiv);
-
-    var inputElement = create_textarea_build('task_developer_comments', 4, '');
-    rowInputDiv.appendChild(inputElement);
-
-    var rowDiv = document.createElement('div');
-    rowDiv.classList.add('dailog-row');
-    formElement.appendChild(rowDiv);
-
-    var rowFormDiv = document.createElement('div');
-    rowDiv.appendChild(rowFormDiv);
-
-    var rowInputDiv = create_input_build('task_id', 'hidden', 0, '');
-    rowFormDiv.appendChild(rowInputDiv);
-
-    var rowInputDiv = create_button_build('btn_task_add', 'Save', '');
-    rowFormDiv.appendChild(rowInputDiv);
-
-    return element;
-  }catch(e){
-    console.log(e);
+    return element
+  } catch (e) {
+    console.log(e)
   }
 }
-document.body.appendChild(task_model_build());
+document.body.appendChild(taskModelBuild())
 
-
-function model_build(id, title, close_id) {
-  try{
-    var element = document.createElement('div');
-    element.id = id;
-    element.classList.add('modal');
-
-    var topDiv = document.createElement('div');
-    topDiv.classList.add('modal-content');
-    element.appendChild(topDiv);
-
-    var cardDiv = document.createElement('div');
-    cardDiv.classList.add('card');
-    topDiv.appendChild(cardDiv);
-
-    var cardTitleDiv = document.createElement('div');
-    cardTitleDiv.classList.add('card-title');
-    cardDiv.appendChild(cardTitleDiv);
-
-    var cardTitleHeader = document.createElement('h3');
-    var t = document.createTextNode(title);
-    cardTitleHeader.appendChild(t);
-    cardTitleDiv.appendChild(cardTitleHeader);
-
-    var spanTitleHeader = document.createElement('span');
-    spanTitleHeader.classList.add('close');
-    spanTitleHeader.id = close_id;
-    spanTitleHeader.innerHTML = "&times;";
-    cardTitleHeader.appendChild(spanTitleHeader);
-
-    var cardContentDiv = document.createElement('div');
-    cardContentDiv.classList.add('card-content');
-    cardContentDiv.classList.add('dialog-cont');
-    cardDiv.appendChild(cardContentDiv);
-    // document.body.appendChild(element);
-    return element;
-  }catch(e){
-    console.log(e);
+function modelBuild (id, title, closeId) {
+  try {
+    var element = createHtml('div', { 'class': 'modal', 'id': id })
+    var topDiv = createHtml('div', { 'class': 'modal-content' }, element)
+    var cardDiv = createHtml('div', { 'class': 'card' }, topDiv)
+    var cardTitleDiv = createHtml('div', { 'class': 'card-title' }, cardDiv)
+    var cardTitleHeader = createHtml('h3', '', cardTitleDiv)
+    cardTitleHeader.textContent = title
+    var cardTitleSpan = createHtml('span', { 'class': 'close', 'id': closeId }, cardTitleHeader)
+    cardTitleSpan.innerHTML = '&times;'
+    createHtml('div', { 'class': ['card-content', 'dialog-cont'] }, cardDiv)
+    return element
+  } catch (e) {
+    console.log(e)
   }
 }
 
-
-function create_input_build(id, type, value, placeholder) {
-  try{
-    var element = document.createElement('input');
-    element.type = type;
-    element.id = id;
-    element.value = value;
-    if(placeholder != ''){
-      element.placeholder = placeholder;
+function createHtml (type, inputJson, appendDiv) {
+  var element = document.createElement(type)
+  if (inputJson) {
+    for (var key in inputJson) {
+      if (Array.isArray(inputJson[key]) && key === 'class') {
+        while (inputJson[key].length > 0) {
+          element.classList.add(inputJson[key].shift())
+        }
+      } else {
+        element.setAttribute(key, inputJson[key])
+      }
     }
-    return element;
-  }catch(e){
-    console.log(e);
   }
-}
-
-function create_combo_build(id, placeholder) {
-  try{
-    var element = document.createElement('select');
-    element.id = id;
-    var option = document.createElement("option");
-    option.disabled = true;
-    option.setAttribute('selected', true);
-    option.value = "";
-    option.text = placeholder;
-    element.add(option);
-    return element;
-  }catch(e){
-    console.log(e);
+  if (appendDiv) {
+    appendDiv.appendChild(element)
   }
-}
-
-function create_textarea_build(id, rows, value) {
-  try{
-    var element = document.createElement('textarea');
-    element.id = id;
-    element.rows = rows;
-    element.value = value;
-    return element;
-  }catch(e){
-    console.log(e);
-  }
-}
-
-function create_button_build(id, label, submitFn) {
-  try{
-    var element = document.createElement('button');
-    var t = document.createTextNode(label);       // Create a text node
-    element.appendChild(t);
-    element.id = id;
-    if(submitFn != ''){
-      element.setAttribute('onsubmit', submitFn);
-    }
-    return element;
-  }catch(e){
-    console.log(e);
-  }
-}
-
-function create_form_build(id, submitFn) {
-  try{
-    var element = document.createElement('form');
-    element.name = id;
-    element.id = id;
-    if(submitFn != ''){
-      element.setAttribute('onsubmit', submitFn);
-    }
-    return element;
-  }catch(e){
-    console.log(e);
-  }
+  return element
 }

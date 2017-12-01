@@ -1,8 +1,8 @@
-header{
+header {
   background-color: $header-background;
-  color:$header-color;
-  position: relative;
-  padding: 10px 20px;
+  color: $header-color;
   display: flex;
   flex-direction: row;
+  padding: 10px 20px;
+  position: relative;
 }

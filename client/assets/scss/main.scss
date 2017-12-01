@@ -1,0 +1,67 @@
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.task {
+  background-color: $white-color;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 30px;
+  margin: 10px 20px;
+  min-height: 30px;
+  padding: 5px;
+  text-transform: capitalize;
+
+  .task-edit,
+  .task-move,
+  .task-remove,
+  .dev-task-move,
+  .qa-task-edit,
+  .qa-task-move,
+  .qa-task-reopen {
+    display: none;
+    float: right;
+  }
+
+  &:hover {
+
+    .task-edit,
+    .task-move,
+    .task-remove,
+    .dev-task-move,
+    .qa-task-edit,
+    .qa-task-move,
+    .qa-task-reopen {
+      cursor: pointer;
+      display: block;
+      text-decoration: none;
+    }
+  }
+}
+
+.dev-color {
+  color: $dev-color;
+}
+
+.moved-color {
+  color: $moved-color;
+}
+
+.completed-color {
+  color: $completed-color;
+}
+
+.task-date {
+  color: $color;
+  float: right;
+  font-weight: normal;
+}
+
+.user-txt {
+  padding-top: 10px;
+}

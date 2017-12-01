@@ -1,5 +1,7 @@
-var developer = {"names":[{"id":0,"name":"tamil"},{"id":1,"name":"murugan"}]};
-localStorage.setItem("developer", JSON.stringify(developer));
+if (!window.localStorage.getItem('taskList')) {
+  var developer = {'names': [{'id': 0, 'name': 'tamil'}, {'id': 1, 'name': 'murugan'}]}
+  window.localStorage.setItem('developer', JSON.stringify(developer))
 
-var task_list = '{"tasks":[{"task_id":0,"task_name":"Frontend Training Initialise", "task_desc":"Frontend Training Initialise", "task_developer_id":0, "task_developer_comments":"testing", "task_developer_start_date":"2017-11-17", "task_status":"completed"}, {"task_id":1,"task_name":"HTML Task", "task_desc":"html page creation", "task_developer_id":0, "task_developer_comments":"testing", "task_developer_start_date":"2017-11-18", "task_status":"dev"},{"task_id":2,"task_name":"Javascript Basic", "task_desc":"html page creation", "task_developer_id":1, "task_developer_comments":"testing", "task_developer_start_date":"2017-11-25", "task_status":"qa"},{"task_id":3,"task_name":"Trello App", "task_desc":"Trello app creation in javascript tasks", "task_status":"created"}], "developer":[{"id":0,"name":"tamil"},{"id":1,"name":"murugan"}]}';
-localStorage.setItem("task_list", JSON.stringify(task_list));
+  var taskList = {'tasks': [{'taskId': 0, 'taskName': 'Frontend Training Initialise', 'taskDesc': 'Frontend Training Initialise', 'taskDeveloperId': 0, 'taskDeveloperComments': 'testing', 'taskDeveloperStartDate': '2017-11-17', 'taskStatus': 'completed', 'taskdevCompletedDate': '2017-11-26', 'taskFullyCompletedDate': '2017-11-27'}, {'taskId': 1, 'taskName': 'HTML Task', 'taskDesc': 'html page creation', 'taskDeveloperId': 0, 'taskDeveloperComments': 'testing', 'taskDeveloperStartDate': '2017-11-18', 'taskStatus': 'dev'}, {'taskId': 2, 'taskName': 'Javascript Basic', 'taskDesc': 'html page creation', 'taskDeveloperId': 1, 'taskDeveloperComments': 'testing', 'taskDeveloperStartDate': '2017-11-25', 'taskStatus': 'qa', 'taskdevCompletedDate': '2017-11-26'}, {'taskId': 3, 'taskName': 'Trello App', 'taskDesc': 'Trello app creation in javascript tasks', 'taskStatus': 'created'}]}
+  window.localStorage.setItem('taskList', JSON.stringify(taskList))
+}

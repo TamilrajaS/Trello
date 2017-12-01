@@ -1,0 +1,11 @@
+footer {
+  background-color: $footer-background-color;
+  bottom: 0;
+  color: $white-color;
+  position: absolute;
+  width: 100%;
+
+  div {
+    margin: 10px 20px;
+  }
+}
